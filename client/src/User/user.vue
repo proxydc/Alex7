@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="error != ''" class="alert alert-danger alert-dismissible fade show">
+      <strong>{{ error }}</strong>
+    </div>
     <div class="d-flex gap-2 py-3">
       <button type="button" class="btn btn-outline-primary" @click="openAddDC()">
         Nouveau candidat
@@ -47,8 +50,7 @@
     <div>
     </div>
   </div>
-</template>
-  
+</template>  
 <script>
 import Admin_Layout from "../admin/admin_Layout.vue";
 import axios from "axios";
@@ -56,6 +58,7 @@ import urldc from "../_helpers/urllist.js";
 import $ from "jquery";
 export default {
   name: "user",
+  components: { Admin_Layout },
   data() {
     return {
       AcRows: [],
@@ -64,9 +67,6 @@ export default {
   },
   mounted() {
     try {
-      /*$(document).ready(function () {
-        $('#usertable').DataTable();
-      });*/
       this.getDCs();
       console.log("data: " + this.AcRows);
 
@@ -74,15 +74,9 @@ export default {
       this.error = err.message;
     }
   },
-  created() {
-
-    //new DataTable('#example');
-
-  },
   methods: {
     getDCs() {
       const url = urldc.getDcsUrl();
-      //alert("urldc: " + url);
       axios.get(url).then((res) => {
         console.log(res.data);
         this.AcRows = res.data;
@@ -107,7 +101,7 @@ export default {
           })
           .catch(function (err) {
             if (err.response) {
-              this.errorlst = err.response.data.errors;
+              this.error = err.response.data.errors;
             }
           });
       }
@@ -124,11 +118,8 @@ export default {
       navigator.clipboard.writeText(content);
     },
   },
-
-  components: { Admin_Layout },
 };
-</script>
-  
+</script>  
   <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 a.btn-sm {

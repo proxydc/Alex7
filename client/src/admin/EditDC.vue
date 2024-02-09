@@ -1,7 +1,9 @@
 <template>
   <div>
+    <div v-if="error != ''" class="alert alert-danger alert-dismissible fade show">
+      <strong>{{ error }}</strong>
+    </div>
     <h1>Edit Candidat</h1>
-    <h2>{{ errorlst }}</h2>
     <div class="container w-50 p-3 my-1 bg-light border border-info">
       <form class="was-validated" @submit.prevent="updateCandidat">
         <div class="register">
@@ -43,7 +45,7 @@ export default {
   name: "EditCandidat",
   data() {
     return {
-      errorlst: "",
+      error: "",
       model: {
         candidat: {
           id: { type: String, required: true },
@@ -70,7 +72,6 @@ export default {
   methods: {
     getCandidatData(dcId) {
       const url = urldc.getDcUrl(dcId);
-      alert("url: " + url);
       axios
         .get(url)
         .then((res) => {
@@ -79,7 +80,7 @@ export default {
         })
         .catch(function (err) {
           if (err.response) {
-            this.errorlst = err.response.data.errors;
+            this.error = err.response.data.errors;
           }
         });
     },
@@ -97,15 +98,12 @@ export default {
         });
         console.log(result);
         if (result.status == 200) {
-          alert(result.data);
           this.$router.push({ name: "user" });
         }
       } catch (err) {
-        this.errorlst = err.errors;
+        this.error = err.errors;
       }
     },
   },
 };
 </script>
-
-<style scoped></style>

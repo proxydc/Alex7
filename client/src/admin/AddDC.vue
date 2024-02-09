@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="error != ''" class="alert alert-danger alert-dismissible fade show">
+      <strong>{{ error }}</strong>
+    </div>
     <h1>Add Candidat</h1>
     <div class="container w-50 p-3 my-1 bg-light border border-info">
       <form class="was-validated" @submit.prevent="addDC">
@@ -29,7 +32,7 @@ export default {
   name: "AddDC",
   data() {
     return {
-      errlst: "",
+      error: "",
       model: {
         dc: {
           familyname: "",
@@ -63,12 +66,9 @@ export default {
         }
       }
       catch (err) {
-        alert(err)
-        this.errlst = err.errors
+        this.error = err.errors
       }
     },
   },
 };
 </script>
-
-<style scoped></style>

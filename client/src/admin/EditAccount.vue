@@ -1,7 +1,9 @@
 <template>
   <div>
+    <div v-if="error != ''" class="alert alert-danger alert-dismissible fade show">
+      <strong>{{ error }}</strong>
+    </div>
     <h1>Edit Account</h1>
-    <h2>{{ errorlst }}</h2>
     <div class="container w-50 p-3 my-1 bg-light border border-info">
       <form class="was-validated" @submit.prevent="updateAccount">
       <div class="register">
@@ -39,7 +41,7 @@ export default {
   name: "EditAccount",
   data() {
     return {
-      errorlst: '',
+      error: '',
       model: {
         account: {
           id: { type: Number, required: true },
@@ -73,7 +75,7 @@ export default {
 
       }).catch(function (err) {
         if (err.response) {
-          this.errorlst = err.response.data.errors;
+          this.error = err.response.data.errors;
         }
 
       });
@@ -94,7 +96,7 @@ export default {
         }
       }
       catch (err) {
-        this.errorlst = err.errors;
+        this.error = err.errors;
       }
     },
   },

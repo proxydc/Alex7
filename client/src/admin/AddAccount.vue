@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="error != ''" class="alert alert-danger alert-dismissible fade show">
+      <strong>{{ error }}</strong>
+    </div>
     <h1>Add Account</h1>
     <div class="container w-50 p-3 my-1 bg-light border border-info">
       <form class="was-validated" @submit.prevent="addAccount">
@@ -39,7 +42,7 @@ export default {
   name: "AddAccount",
   data() {
     return {
-      errlst: "",
+      error: "",
 
       model: {
         account: {
@@ -63,8 +66,7 @@ export default {
   methods: {
     async addAccount() {
       try {
-        const url = urlacc.getAddAccUrl();//"http://localhost:3000/api/v1/database/account/add";
-        alert("url" + url + " login: " + this.model.account.login_name + " displayname: " + this.model.account.display_name + " role_id: " + this.model.account.role_id);
+        const url = urlacc.getAddAccUrl();
         let result = await axios.post(url, {
           login_name: this.model.account.login_name,
           display_name: this.model.account.display_name,
@@ -78,7 +80,7 @@ export default {
         }
       }
       catch (err) {
-        this.errlst = err.errors
+        this.error = err.message
       }
     },
   },

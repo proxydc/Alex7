@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="error != ''" class="alert alert-danger alert-dismissible fade show">
+      <strong>{{ error }}</strong>
+    </div>
     <div class="d-flex gap-2 py-3">
       <button type="button" class="btn btn-outline-primary" @click="openAddAccount()">
         Nouveau account
@@ -48,6 +51,7 @@ import urlacc from "../_helpers/urllist.js";
 import $ from "jquery";
 export default {
   name: "admin",
+  components: { Admin_Layout },
   data() {
     return {
       AcRows: [],
@@ -66,7 +70,7 @@ export default {
   },
   methods: {
     getLogins() {
-      const url = urlacc.getLoginUrl();// 'http://localhost:3000/api/v1/database/account';
+      const url = urlacc.getLoginUrl();
       axios.get(url).then(res => {
         console.log(res.data);
         this.AcRows = res.data;
@@ -79,33 +83,22 @@ export default {
       this.$router.push({ name: "AddAccount" });
     },
     deleteAccount(accountId) {
-      //alert("account: " + accountId);
       if (confirm('Are you sure, you want to delete this account. Account Id: ' + accountId)) {
-        const url = urlacc.getEditDelAccUrl(accountId);// `http://localhost:3000/api/v1/database/account/${accountId}`;
-        //alert("url: " + url);
+        const url = urlacc.getEditDelAccUrl(accountId);
         axios.delete(url).then(res => {
           console.log(res.data);
           this.getLogins();
         }).catch(function (err) {
           if (err.response) {
-            this.errorlst = err.response.data.errors;
+            this.error = err.response.data.errors;
           }
         });
       }
     },
     editAccount(accountId) {
       this.$router.push({ path: "/editAccount/" + accountId });
-
     },
   },
-  components: { Admin_Layout }
 };
 </script>
-  
-  <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-a.btn-sm {
-  margin-right: 5px;
-}
-</style>
   
