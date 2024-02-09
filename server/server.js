@@ -31,4 +31,6 @@ app.listen(PORT, function check(err)
     console.log("error");
     else
     console.log("started on port "+ PORT);
+    console.log("devurl: "+ process.env.PG_SITEURLDEV);
+    console.log("produrl: "+ process.env.PG_SITEURLPROD);
 });
