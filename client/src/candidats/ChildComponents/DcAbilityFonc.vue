@@ -1,9 +1,10 @@
 <template>
   <div>
     <h5>{{ title }}</h5>
+    <h5>{{ maxILength }}</h5>
     <div id="fonct">
       <input
-        v-for="(ability, index) in functionalAbilities"
+        v-for="(ability, index) in functionalAbilities"  :maxlength="maxILength"
         :value="ability"
         :key="index"
         class="form-control dc-vlist"
@@ -14,7 +15,7 @@
     <button
       type="button"
       class="btn btn-outline-info btn-sm"
-      @click="addRow"
+      @click="addRow(maxILength)"
     >
       Ajouter une compétence
     </button>
@@ -43,15 +44,20 @@ export default {
     functionalAbilities: {
       type: Array,
     },
+    maxILength: {
+      type: Number,
+      required: true,
+    },
   },
  /* defineEmits:{
     (['update:abilities'])
   },*/
   methods: {
-    addRow() {
+    addRow(len) {
       var container = document.getElementById("fonct");
       var newInput = document.createElement("input");
       newInput.classList = "form-control dc-vlist dc-tmp";
+      newInput.maxLength = len;       
       container.appendChild(newInput);
     },
   },
@@ -59,4 +65,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>

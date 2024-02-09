@@ -5,58 +5,41 @@
         <p class="h2 dc-page-title">Dossier de compétences</p>
       </div>
       <div v-if="errormsg" class="alert alert-danger alert-dismissible fade show">
-        <strong>Error!</strong> <br/>{{ errormsg }}
+        <strong>Error!</strong> <br />{{ errormsg }}
       </div>
       <div class="container p-3 my-5 bg-light border border-primary dc-form">
         <form action="" @submit.prevent="onSubmit">
-          <dcIdentity
-            :familyname="dc.familyname"
-            :firstname="dc.firstname"
-            :email="dc.email"
-          />
+          <dcIdentity :familyname="dc.familyname" :firstname="dc.firstname" :email="dc.email" />
           <div class="row dc-section">
             <div class="col">
-              <AbilityFonc
-                title="Compétences fonctionnelles"
-                uid="fonct"
-                :functionalAbilities="dc.document.functionalAbilities"
-              />
+              <AbilityFonc title="Compétences fonctionnelles" uid="fonct" :maxILength="maxInputLength"
+                :functionalAbilities="dc.document.functionalAbilities" />
             </div>
             <div class="col">
-              <AbilityTech
-                title="Compétences techniques"
-                uid="techn"
-                :functionalAbilities="dc.document.technicalAbilities"
-              />
+              <AbilityTech title="Compétences techniques" uid="techn" :maxILength="maxInputLength"
+                :functionalAbilities="dc.document.technicalAbilities" />
             </div>
           </div>
           <div class="row dc-section">
             <div class="col">
-              <Certification
-                :certifications="dc.document.certifications"
-              />
+              <Certification :certifications="dc.document.certifications" :maxILength="maxInputLength" />
             </div>
             <div class="col">
-              <Language :languages="dc.document.languages" />
+              <Language :languages="dc.document.languages" :maxILength="maxInputLength" />
             </div>
           </div>
 
-          <ExperiencePro :experiences="dc.document.experiences" :xpAddedCounter=0 />
-          <ExperiencePerso :projects="dc.document.projects" :xpAddedCounter=0 />
+          <ExperiencePro :experiences="dc.document.experiences" :xpAddedCounter=0 :maxILength="maxInputLength" />
+          <ExperiencePerso :projects="dc.document.projects" :xpAddedCounter=0 :maxILength="maxInputLength" />
 
           <div class="container dc-section">
             <div class="row align-items-center dc-syn-item">
-              <div class="col col-2"> 
-                <label class="col-form-label" for="syn_env"
-                  >Environnement</label
-                >
+              <div class="col col-2">
+                <label class="col-form-label" for="syn_env">Environnement</label>
               </div>
               <div class="col col-8">
-                <input
-                  class="form-control"
-                  id="syn_env"
-                  v-model="dc.document.skills.environments"
-                />
+                <input @keydown.enter="focusnext" :maxlength="maxInputLength" class="form-control" id="syn_env"
+                  v-model="dc.document.skills.environments" />
               </div>
             </div>
             <div class="row align-items-center dc-syn-item">
@@ -64,11 +47,8 @@
                 <label class="col-form-label" for="syn_lang">Languages</label>
               </div>
               <div class="col-8">
-                <input
-                  class="form-control"
-                  id="syn_lang"
-                  v-model="dc.document.skills.languages"
-                />
+                <input @keydown.enter="focusnext" class="form-control" id="syn_lang"
+                  v-model="dc.document.skills.languages" />
               </div>
             </div>
             <div class="row align-items-center dc-syn-item">
@@ -76,11 +56,8 @@
                 <label class="col-form-label" for="syn_bdd">SGBD</label>
               </div>
               <div class="col-8">
-                <input
-                  class="form-control"
-                  id="syn_bdd"
-                  v-model="dc.document.skills.databases"
-                />
+                <input @keydown.enter="focusnext" class="form-control" id="syn_bdd"
+                  v-model="dc.document.skills.databases" />
               </div>
             </div>
             <div class="row align-items-center dc-syn-item">
@@ -88,11 +65,7 @@
                 <label class="col-form-label" for="syn_out">Outils</label>
               </div>
               <div class="col-8">
-                <input
-                  class="form-control"
-                  id="syn_out"
-                  v-model="dc.document.skills.tools"
-                />
+                <input @keydown.enter="focusnext" class="form-control" id="syn_out" v-model="dc.document.skills.tools" />
               </div>
             </div>
             <div class="row align-items-center dc-syn-item">
@@ -100,11 +73,8 @@
                 <label class="col-form-label" for="syn_sys">Systèmes</label>
               </div>
               <div class="col-8">
-                <input
-                  class="form-control"
-                  id="syn_sys"
-                  v-model="dc.document.skills.systems"
-                />
+                <input @keydown.enter="focusnext" class="form-control" id="syn_sys"
+                  v-model="dc.document.skills.systems" />
               </div>
             </div>
           </div>
@@ -112,11 +82,7 @@
           <div class="row dc-section">
             <div class="col">
               <h5>En bref</h5>
-              <textarea
-                class="form-control dc-ta-bref"
-                placeholder="..."
-                v-model="dc.document.bref"
-              ></textarea>
+              <textarea class="form-control dc-ta-bref" placeholder="..." v-model="dc.document.bref"></textarea>
             </div>
           </div>
 
@@ -126,11 +92,7 @@
                 <button type="button" class="btn btn-primary" @click="save(dc)">
                   Enregistrer
                 </button>
-                <button
-                  type="button"
-                  class="btn btn-warning"
-                  @click="saveAndClose(dc)"
-                >
+                <button type="button" class="btn btn-warning" @click="saveAndClose(dc)">
                   Marquer comme finalisé
                 </button>
               </div>
@@ -174,6 +136,7 @@ export default {
       document: {},
       xpAddedCounter: 0,
       errormsg: "",
+      maxInputLength: 60,
     };
   },
   setup() {
@@ -203,7 +166,7 @@ export default {
   },*/
   created() {
     try {
-      this.documentId =this.$route.params.id;
+      this.documentId = this.$route.params.id;
       console.log("Iam here");
       this.getDC(this.$route.params.id);
       console.log("data: " + this.form);
@@ -212,15 +175,21 @@ export default {
     }
   },
   methods: {
+    /*focusnext(e) {
+      const inputs = array.from(e.target.form.queryselectorall('input[type="text"]'));
+      const index = inputs.indexof(e.target);
+
+      if (index < inputs.length) {
+        inputs[index + 1].focus();
+      }
+    },*/
     getDC(id) {
       try {
         const url = urldc.getDcUrl(id);
         axios.get(url).then((res) => {
           console.log(res.data);
-          if(res.status==200)
-          {this.form = res.data;}
-          if(res.status==201)
-          {
+          if (res.status == 200) { this.form = res.data; }
+          if (res.status == 201) {
             this.$router.push({ name: 'NotFound' })
           }
         });
@@ -230,7 +199,7 @@ export default {
     },
     save(dc) {
       try {
-        alert("idwork: "+ this.documentId)
+        alert("idwork: " + this.documentId)
         const status = 2;
         FormData.save(this.$route.params.id, dc.document, document, status);
         location.reload();
@@ -238,13 +207,12 @@ export default {
         this.errormsg = err;
       }
     },
-    saveAndClose(dc)
-    {
+    saveAndClose(dc) {
       try {
-        alert("idwork: "+ this.documentId)
+        alert("idwork: " + this.documentId)
         const status = 3;
         FormData.save(this.$route.params.id, dc.document, document, status);
-        this.$router.push({ name: "PageEnd"})
+        this.$router.push({ name: "PageEnd" })
       } catch (err) {
         this.errormsg = err;
       }
@@ -257,27 +225,34 @@ export default {
   margin: 5px 60px 5px 10px;
   max-height: 48px;
 }
+
 .dc-page-title {
   padding-top: 17px;
   margin-bottom: 3rem;
 }
+
 .dc-vlist {
   margin: 0.5rem 0rem;
 }
+
 .dc-section {
   margin-bottom: 3rem;
 }
+
 form h5 {
   font-variant: small-caps;
   font-weight: bold;
   color: #008cba;
 }
+
 .dc-ta-bref {
   height: 6rem;
 }
+
 .dc-syn-item {
   margin-bottom: 1rem;
 }
+
 .dc-syn-item label {
   font-weight: bold;
   color: #008cba;

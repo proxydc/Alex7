@@ -3,16 +3,21 @@ import { ref } from "vue";
 export default {
   props: {
     projects: [],
+    maxILength: {
+      type: Number,
+      required: true,
+    },
   },
 
   methods: {
-    addRowTaskProject(index) {
+    addRowTaskProject(index, len) {
       var container = document.getElementById("taskproj" + index);
       var newInput = document.createElement("input");
       newInput.classList = "form-control dc-vlist dc-tmp";
+      newInput.maxLength = len; 
       container.appendChild(newInput);
     },
-    addRowProjectPerso() {
+    addRowProjectPerso(len) {
       var newNode = document.getElementById("ghost_perso_project").cloneNode(true);
       newNode.querySelector(".dc-tasklist-perso").id =
         "proj_tasklist_" + xpAddedCounter.value;
@@ -33,6 +38,7 @@ export default {
         var container = document.getElementById(id);
         var newInput = document.createElement("input");
         newInput.classList = "form-control dc-vlist dc-tmp";
+        newInput.maxLength = len; 
         container.appendChild(newInput);
       })
       xpAddedCounter.value++;
@@ -74,10 +80,10 @@ const xpAddedCounter = ref(0);
             <div class="col dc-tasklist">
               <label>Tâches</label>
               <div v-bind:id="`taskproj${index}`">
-                <input v-for="(task, index) in proj.tasks" :value="task" :key="index" class="form-control dc-vlist"
+                <input v-for="(task, index) in proj.tasks" :value="task" :key="index" class="form-control dc-vlist" :maxlength="maxILength"
                   type="text" />
               </div>
-              <button class="btn btn-outline-primary btn-sm" @click="addRowTaskProject(`${index}`)">
+              <button class="btn btn-outline-primary btn-sm" @click="addRowTaskProject(`${index}`, maxILength)">
                 Ajouter une ligne
               </button>
             </div>
@@ -110,10 +116,10 @@ const xpAddedCounter = ref(0);
             <div class="col dc-tasklist-perso">
               <label for="">Tâches</label>
               <div class="dc-taskinputlist-perso">
-                <input class="form-control dc-vlist" type="text" placeholder="" aria-label="" />
-                <input class="form-control dc-vlist" type="text" placeholder="" aria-label="" />
-                <input class="form-control dc-vlist" type="text" placeholder="" aria-label="" />
-                <input class="form-control dc-vlist" type="text" placeholder="" aria-label="" />
+                <input class="form-control dc-vlist" type="text" placeholder="" aria-label="" :maxlength="maxILength"/>
+                <input class="form-control dc-vlist" type="text" placeholder="" aria-label="" :maxlength="maxILength"/>
+                <input class="form-control dc-vlist" type="text" placeholder="" aria-label="" :maxlength="maxILength" />
+                <input class="form-control dc-vlist" type="text" placeholder="" aria-label="" :maxlength="maxILength"/>
               </div>
               <button class="btn btn-outline-primary btn-sm dc-taskbutton-perso">
                 Ajouter une ligne
@@ -129,7 +135,7 @@ const xpAddedCounter = ref(0);
 
       <div class="row text-center">
         <div class="col">
-          <button type="button" class="btn btn-outline-info btn-sm" @click="addRowProjectPerso">
+          <button type="button" class="btn btn-outline-info btn-sm" @click="addRowProjectPerso(maxILength)">
             Nouvelle experience personnelle
           </button>
         </div>

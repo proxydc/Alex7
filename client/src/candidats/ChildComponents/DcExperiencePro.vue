@@ -3,10 +3,14 @@ import { ref } from "vue";
 export default {
   props: {
     experiences: [],
+    maxILength: {
+      type: Number,
+      required: true,
+    },
   },
 
   methods: {
-    addRowXpPro() {
+    addRowXpPro(len) {
       var newNode = document.getElementById("ghost_xp_pro").cloneNode(true);
       newNode.querySelector(".dc-tasklist").id =
         "xp_tasklist_" + xpAddedCounter.value;
@@ -27,15 +31,17 @@ export default {
         var container = document.getElementById(id);
         var newInput = document.createElement("input");
         newInput.classList = "form-control dc-vlist dc-tmp";
+        newInput.maxLength = len; 
         container.appendChild(newInput);
 
       })
       xpAddedCounter.value++;
     },
-    addRowTaskXp(index) {
+    addRowTaskXp(index, len) {
       var container = document.getElementById("taskxp" + index);
       var newInput = document.createElement("input");
       newInput.classList = "form-control dc-vlist dc-tmp";
+      newInput.maxLength = len; 
       container.appendChild(newInput);
     },
   },
@@ -84,7 +90,7 @@ const xpAddedCounter = ref(0);
                 <input v-for="(task, index) in experience.tasks" :value="task" :key="index" class="form-control dc-vlist"
                   type="text" />
               </div>
-              <button class="btn btn-outline-primary btn-sm" @click="addRowTaskXp(`${index}`)">
+              <button class="btn btn-outline-primary btn-sm" @click="addRowTaskXp(`${index}`, maxILength)">
                 Ajouter une ligne
               </button>
             </div>
@@ -124,10 +130,10 @@ const xpAddedCounter = ref(0);
             <div class="col dc-tasklist">
               <label for="">Compétences/ Tâches</label>
               <div class="dc-taskinputlist">
-                <input class="form-control dc-vlist" type="text" placeholder="" aria-label="" />
-                <input class="form-control dc-vlist" type="text" placeholder="" aria-label="" />
-                <input class="form-control dc-vlist" type="text" placeholder="" aria-label="" />
-                <input class="form-control dc-vlist" type="text" placeholder="" aria-label="" />
+                <input class="form-control dc-vlist" type="text" placeholder="" aria-label="" :maxlength="maxILength" />
+                <input class="form-control dc-vlist" type="text" placeholder="" aria-label="" :maxlength="maxILength" />
+                <input class="form-control dc-vlist" type="text" placeholder="" aria-label="" :maxlength="maxILength" />
+                <input class="form-control dc-vlist" type="text" placeholder="" aria-label="" :maxlength="maxILength" />
               </div>
               <button class="btn btn-outline-primary btn-sm dc-taskbutton">
                 Ajouter une ligne
@@ -143,7 +149,7 @@ const xpAddedCounter = ref(0);
 
       <div class="row text-center">
         <div class="col">
-          <button type="button" class="btn btn-outline-info btn-sm" @click="addRowXpPro">
+          <button type="button" class="btn btn-outline-info btn-sm" @click="addRowXpPro(maxILength)">
             Nouvelle experience professionnelle
           </button>
         </div>

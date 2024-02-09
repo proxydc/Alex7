@@ -2,12 +2,17 @@
 export default {
   props: {
     languages: [],
+    maxILength: {
+      type: Number,
+      required: true,
+    },
   },
   methods: {
-    addRow() {
+    addRow(len) {
       var newInput = document.createElement("input");
       newInput.setAttribute("list", "languages");
       newInput.classList = "form-control dc-vlist";
+      newInput.maxLength = len; 
       var newcol = document.createElement("div");
       newcol.classList = "col dc-tmp";
       newcol.appendChild(newInput);
@@ -47,7 +52,7 @@ function saveData() {
     </datalist>
     <div class="row">
       <div class="col text-center">
-        <button type="button" class="btn btn-outline-info btn-sm" @click="addRow">
+        <button type="button" class="btn btn-outline-info btn-sm" @click="addRow(maxILength)">
           Ajouter une langue
         </button>
       </div>

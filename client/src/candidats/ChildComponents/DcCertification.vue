@@ -3,6 +3,10 @@ import { ref } from "vue";
 export default {
   props: {
     certifications: [],
+    maxILength: {
+      type: Number,
+      required: true,
+    },
   },
   methods: {
     addRow() {
@@ -25,11 +29,11 @@ const certAddedCounter = ref(0);
       <div class="cert" v-for="(cert, index) in certifications" :key="cert">
         <div class="row">
           <div class="col col-3">
-            <input class="form-control dc-vlist" type="number" min="1970" max="2030" placeholder="Année"
+            <input class="form-control dc-vlist" type="number" min="1970" max="2030" placeholder="Année" 
               :value="cert.year" :key="index" id="" />
           </div>
           <div class="col col-9">
-            <input class="form-control dc-vlist" type="text" placeholder="Libellé" :value="cert.title" :key="index" />
+            <input class="form-control dc-vlist" type="text" placeholder="Libellé" :value="cert.title" :key="index" :maxlength="maxILength" />
           </div>
         </div>
       </div>
@@ -39,7 +43,7 @@ const certAddedCounter = ref(0);
             <input class="form-control dc-vlist" type="number" min="1970" max="2030" placeholder="Année" id="" name="" />
           </div>
           <div class="col col-9">
-            <input class="form-control dc-vlist" type="text" placeholder="Libellé" id="" name="" />
+            <input class="form-control dc-vlist" type="text" placeholder="Libellé" id="" name="" :maxlength="maxILength" />
           </div>
         </div>
       </div>
